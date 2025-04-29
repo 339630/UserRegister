@@ -5,11 +5,11 @@ namespace UserRegister
 {
     using Notification = KeyValuePair<EventType, object?>;
 
-    public partial class Form1 : Form, EventAgg.ISubscriber<Notification>
+    public partial class Kartoteka : Form, EventAgg.ISubscriber<Notification>
     {
         private EventAgg.IEventAggregator _eventAggregator;
 
-        public Form1(EventAgg.IEventAggregator eventAggregator)
+        public Kartoteka(EventAgg.IEventAggregator eventAggregator)
         {
             InitializeComponent();
             InitializeTreeView();
@@ -18,22 +18,15 @@ namespace UserRegister
 
         private void addPerson()
         {
-            // determine whether to add a student or a teacher
             if (treeView1.SelectedNode == null)
             {
                 MessageBox.Show("Please select a category to add a person to.");
                 return;
             }
 
+            // determine whether to add a student or a teacher
             TreeNode categoryNode = treeView1.SelectedNode.Level == 0
                 ? treeView1.SelectedNode : treeView1.SelectedNode.Parent;
-            //if (treeView1.SelectedNode.Level == 0)
-            //{
-            //    category = treeView1.SelectedNode;
-            //} else if (treeView1.SelectedNode.Level == 1)
-            //{
-            //    category = treeView1.SelectedNode.Parent;
-            //}
 
             AddEditDialog addEditDialog = new AddEditDialog();
             addEditDialog.ShowDialog();
@@ -74,11 +67,6 @@ namespace UserRegister
 
         private void editPerson(TreeNode node)
         {
-            //if (node == null)
-            //{
-            //    MessageBox.Show("Please select a person to edit.");
-            //    return;
-            //}
             Person p = (Person)node.Tag;
             AddEditDialog addEditDialog = new AddEditDialog(p);
             addEditDialog.ShowDialog();
@@ -105,12 +93,6 @@ namespace UserRegister
 
         private void showCategory(TreeNode categoryNode)
         {
-            if (treeView1.SelectedNode == null)
-            {
-                MessageBox.Show("Please select a category to show");
-                return;
-            }
-
             hidePanels();
             categoryPanel.Visible = true;
             categoryPanel.BringToFront();
@@ -124,15 +106,11 @@ namespace UserRegister
             }
         }
 
-        // Populates a TreeView control with example nodes. 
         private void InitializeTreeView()
         {
             treeView1.BeginUpdate();
             treeView1.Nodes.Add("Studenci");
-            //treeView1.Nodes[0].Nodes.Add("Child 1");
-            //treeView1.Nodes[0].Nodes.Add("Child 2");
             treeView1.Nodes.Add("Wyk³adowcy");
-            //treeView1.Nodes[1].Nodes.Add("Child 3");
             treeView1.EndUpdate();
         }
 
@@ -175,8 +153,6 @@ namespace UserRegister
                 _eventAggregator.Publish(new Notification(EventType.CategorySelectedNotification, e.Node));
             } else
             {
-                // TODO : change to event
-                //showPerson(e.Node.Tag as Person);
                 _eventAggregator.Publish(new Notification(EventType.UserProfileSelectedNotification, e.Node.Tag));
             }
         }

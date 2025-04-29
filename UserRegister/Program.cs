@@ -72,9 +72,6 @@ namespace UserRegister
         AddUserProfileNotification,
         EditUserProfileNotification
     }
-    
-
-
 
     internal static class Program
     {
@@ -89,9 +86,10 @@ namespace UserRegister
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
             EventAggregator eventAggregator = new EventAggregator();
-            Form1 form1 = new Form1(eventAggregator);
+            Kartoteka form1 = new Kartoteka(eventAggregator);
             eventAggregator.AddSubscriber<Notification>(form1);
             Application.Run(form1);
+            eventAggregator.RemoveSubscriber<Notification>(form1);
         }
     }
 }

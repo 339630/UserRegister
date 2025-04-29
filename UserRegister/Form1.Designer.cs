@@ -1,6 +1,6 @@
 ﻿namespace UserRegister
 {
-    partial class Form1
+    partial class Kartoteka
     {
         /// <summary>
         ///  Required designer variable.
@@ -144,12 +144,14 @@
             SurnameCol.HeaderText = "Nazwisko";
             SurnameCol.Name = "SurnameCol";
             SurnameCol.ReadOnly = true;
+            SurnameCol.Width = 180;
             // 
             // NameCol
             // 
             NameCol.HeaderText = "Imię";
             NameCol.Name = "NameCol";
             NameCol.ReadOnly = true;
+            NameCol.Width = 180;
             // 
             // BirthdayCol
             // 
@@ -157,7 +159,7 @@
             BirthdayCol.Name = "BirthdayCol";
             BirthdayCol.ReadOnly = true;
             // 
-            // Form1
+            // Kartoteka
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -166,7 +168,7 @@
             Controls.Add(panelPersonInfo);
             Controls.Add(treeView1);
             Controls.Add(buttonAdd);
-            Name = "Form1";
+            Name = "Kartoteka";
             Text = "Form1";
             panelPersonInfo.ResumeLayout(false);
             panelPersonInfo.PerformLayout();
