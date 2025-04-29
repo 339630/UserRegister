@@ -3,7 +3,9 @@ using EventAgg = Uwr.OOP.BehavioralPatterns.EventAggregator;
 
 namespace UserRegister
 {
-    public partial class Form1 : Form, EventAgg.ISubscriber<string>
+    using Notification = KeyValuePair<EventType, object?>;
+
+    public partial class Form1 : Form, EventAgg.ISubscriber<Notification>
     {
         private EventAgg.IEventAggregator _eventAggregator;
 
@@ -70,14 +72,14 @@ namespace UserRegister
             birthDateTextBox.Text = p.DateOfBirth.ToShortDateString();
         }
 
-        private void editPerson()
+        private void editPerson(TreeNode node)
         {
-            if (treeView1.SelectedNode == null)
-            {
-                MessageBox.Show("Please select a person to edit.");
-                return;
-            }
-            Person p = (Person)treeView1.SelectedNode.Tag;
+            //if (node == null)
+            //{
+            //    MessageBox.Show("Please select a person to edit.");
+            //    return;
+            //}
+            Person p = (Person)node.Tag;
             AddEditDialog addEditDialog = new AddEditDialog(p);
             addEditDialog.ShowDialog();
             if (addEditDialog.DialogResult != DialogResult.OK)
@@ -90,8 +92,8 @@ namespace UserRegister
                 return;
             }
             // Update the person in the tree view
-            treeView1.SelectedNode.Text = p.Name + " " + p.Surname;
-            treeView1.SelectedNode.Tag = p;
+            node.Text = p.Name + " " + p.Surname;
+            node.Tag = p;
             showPerson(p);
         }
 
@@ -101,7 +103,7 @@ namespace UserRegister
             panelPersonInfo.Visible = false;
         }
 
-        private void showCategory()
+        private void showCategory(TreeNode categoryNode)
         {
             if (treeView1.SelectedNode == null)
             {
@@ -114,7 +116,7 @@ namespace UserRegister
             categoryPanel.BringToFront();
 
             dataGridView1.Rows.Clear();
-            TreeNode categoryNode = treeView1.SelectedNode;
+            //TreeNode categoryNode = treeView1.SelectedNode;
             for (int i = 0; i < categoryNode.Nodes.Count; i++)
             {
                 Person p = (Person)categoryNode.Nodes[i].Tag;
@@ -134,22 +136,35 @@ namespace UserRegister
             treeView1.EndUpdate();
         }
 
-        public new void Handle(string notification)
+        public new void Handle(Notification notification)
         {
-            // MessageBox.Show(notification);
-            if (notification == "AddUserProfileNotification")
+            if (notification.Key == EventType.AddUserProfileNotification)
             {
                 addPerson();
             }
-            else if (notification == "UserProfileSelectedNotification")
+            else if (notification.Key == EventType.UserProfileSelectedNotification)
             {
-                //showPerson();
-            } else if (notification == "EditUserProfileNotification")
+                if (notification.Value == null)
+                {
+                    return;
+                }
+                showPerson(notification.Value as Person);
+            }
+            else if (notification.Key == EventType.EditUserProfileNotification)
             {
-                editPerson();
-            } else if (notification == "CategorySelectedNotification")
+                if (notification.Value == null)
+                {
+                    return;
+                }
+                editPerson(notification.Value as TreeNode);
+            }
+            else if (notification.Key == EventType.CategorySelectedNotification)
             {
-                showCategory();
+                if (notification.Value == null)
+                {
+                    return;
+                }
+                showCategory(notification.Value as TreeNode);
             }
         }
 
@@ -157,18 +172,18 @@ namespace UserRegister
         {
             if (e.Node.Level == 0)
             {
-                //panelPersonInfo.Visible = false;
-                _eventAggregator.Publish("CategorySelectedNotification");
+                _eventAggregator.Publish(new Notification(EventType.CategorySelectedNotification, e.Node));
             } else
             {
-                showPerson(e.Node.Tag as Person);
+                // TODO : change to event
+                //showPerson(e.Node.Tag as Person);
+                _eventAggregator.Publish(new Notification(EventType.UserProfileSelectedNotification, e.Node.Tag));
             }
         }
 
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            //MessageBox.Show("test");
-            _eventAggregator.Publish("AddUserProfileNotification");
+            _eventAggregator.Publish(new Notification(EventType.AddUserProfileNotification, null));
         }
 
         private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
@@ -196,9 +211,7 @@ namespace UserRegister
                 MessageBox.Show("Please select a person to edit.");
                 return;
             }
-            _eventAggregator.Publish("EditUserProfileNotification");
-            // TODO: add payload to the event?
-            // add payload of category and 
+            _eventAggregator.Publish(new Notification(EventType.EditUserProfileNotification, treeView1.SelectedNode));
         }
     }
 }

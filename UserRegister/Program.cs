@@ -42,6 +42,8 @@ namespace Uwr.OOP.BehavioralPatterns.EventAggregator
 
 namespace UserRegister
 {
+    using Notification = KeyValuePair<EventType, object?>;
+
     public class Person
     {
         public string Name { get; set; }
@@ -63,8 +65,20 @@ namespace UserRegister
         }
     }
 
+    public enum EventType
+    {
+        CategorySelectedNotification,
+        UserProfileSelectedNotification,
+        AddUserProfileNotification,
+        EditUserProfileNotification
+    }
+    
+
+
+
     internal static class Program
     {
+        
         /// <summary>
         ///  The main entry point for the application.
         /// </summary>
@@ -76,7 +90,7 @@ namespace UserRegister
             ApplicationConfiguration.Initialize();
             EventAggregator eventAggregator = new EventAggregator();
             Form1 form1 = new Form1(eventAggregator);
-            eventAggregator.AddSubscriber<string>(form1);
+            eventAggregator.AddSubscriber<Notification>(form1);
             Application.Run(form1);
         }
     }
