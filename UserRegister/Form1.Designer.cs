@@ -41,6 +41,9 @@
             SurnameCol = new DataGridViewTextBoxColumn();
             NameCol = new DataGridViewTextBoxColumn();
             BirthdayCol = new DataGridViewTextBoxColumn();
+            label1 = new Label();
+            label2 = new Label();
+            label3 = new Label();
             panelPersonInfo.SuspendLayout();
             categoryPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
@@ -52,7 +55,7 @@
             buttonAdd.Name = "buttonAdd";
             buttonAdd.Size = new Size(218, 46);
             buttonAdd.TabIndex = 0;
-            buttonAdd.Text = "Add person";
+            buttonAdd.Text = "Dodaj osobę";
             buttonAdd.UseVisualStyleBackColor = true;
             buttonAdd.Click += buttonAdd_Click;
             // 
@@ -62,7 +65,7 @@
             buttonEdit.Name = "buttonEdit";
             buttonEdit.Size = new Size(206, 46);
             buttonEdit.TabIndex = 2;
-            buttonEdit.Text = "Edit Person";
+            buttonEdit.Text = "Edytuj";
             buttonEdit.UseVisualStyleBackColor = true;
             buttonEdit.Click += buttonEdit_Click;
             // 
@@ -76,6 +79,9 @@
             // 
             // panelPersonInfo
             // 
+            panelPersonInfo.Controls.Add(label3);
+            panelPersonInfo.Controls.Add(label2);
+            panelPersonInfo.Controls.Add(label1);
             panelPersonInfo.Controls.Add(birthDateTextBox);
             panelPersonInfo.Controls.Add(nameTextBox);
             panelPersonInfo.Controls.Add(buttonEdit);
@@ -90,7 +96,7 @@
             // birthDateTextBox
             // 
             birthDateTextBox.Enabled = false;
-            birthDateTextBox.Location = new Point(86, 106);
+            birthDateTextBox.Location = new Point(190, 108);
             birthDateTextBox.Name = "birthDateTextBox";
             birthDateTextBox.Size = new Size(263, 23);
             birthDateTextBox.TabIndex = 3;
@@ -98,7 +104,7 @@
             // nameTextBox
             // 
             nameTextBox.Enabled = false;
-            nameTextBox.Location = new Point(86, 62);
+            nameTextBox.Location = new Point(190, 63);
             nameTextBox.Name = "nameTextBox";
             nameTextBox.Size = new Size(263, 23);
             nameTextBox.TabIndex = 2;
@@ -106,7 +112,7 @@
             // surnameTextBox
             // 
             surnameTextBox.Enabled = false;
-            surnameTextBox.Location = new Point(86, 18);
+            surnameTextBox.Location = new Point(190, 21);
             surnameTextBox.Name = "surnameTextBox";
             surnameTextBox.Size = new Size(263, 23);
             surnameTextBox.TabIndex = 1;
@@ -114,7 +120,7 @@
             // surnameLabel
             // 
             surnameLabel.AutoSize = true;
-            surnameLabel.Location = new Point(23, 21);
+            surnameLabel.Location = new Point(115, 24);
             surnameLabel.Name = "surnameLabel";
             surnameLabel.Size = new Size(57, 15);
             surnameLabel.TabIndex = 0;
@@ -124,7 +130,7 @@
             // categoryPanel
             // 
             categoryPanel.Controls.Add(dataGridView1);
-            categoryPanel.Location = new Point(236, 12);
+            categoryPanel.Location = new Point(236, 15);
             categoryPanel.Name = "categoryPanel";
             categoryPanel.Size = new Size(552, 423);
             categoryPanel.TabIndex = 5;
@@ -159,6 +165,34 @@
             BirthdayCol.Name = "BirthdayCol";
             BirthdayCol.ReadOnly = true;
             // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(248, 206);
+            label1.Name = "label1";
+            label1.Size = new Size(57, 15);
+            label1.TabIndex = 4;
+            label1.Text = "Nazwisko";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(142, 66);
+            label2.Name = "label2";
+            label2.Size = new Size(30, 15);
+            label2.TabIndex = 5;
+            label2.Text = "Imię";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(86, 111);
+            label3.Name = "label3";
+            label3.Size = new Size(86, 15);
+            label3.TabIndex = 6;
+            label3.Text = "Data urodzenia";
+            label3.Click += label3_Click;
+            // 
             // Kartoteka
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -192,5 +226,8 @@
         private DataGridViewTextBoxColumn SurnameCol;
         private DataGridViewTextBoxColumn NameCol;
         private DataGridViewTextBoxColumn BirthdayCol;
+        private Label label3;
+        private Label label2;
+        private Label label1;
     }
 }

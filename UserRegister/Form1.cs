@@ -151,7 +151,8 @@ namespace UserRegister
             if (e.Node.Level == 0)
             {
                 _eventAggregator.Publish(new Notification(EventType.CategorySelectedNotification, e.Node));
-            } else
+            }
+            else
             {
                 _eventAggregator.Publish(new Notification(EventType.UserProfileSelectedNotification, e.Node.Tag));
             }
@@ -188,6 +189,11 @@ namespace UserRegister
                 return;
             }
             _eventAggregator.Publish(new Notification(EventType.EditUserProfileNotification, treeView1.SelectedNode));
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
