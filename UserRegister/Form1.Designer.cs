@@ -142,7 +142,7 @@
             dataGridView1.Columns.AddRange(new DataGridViewColumn[] { SurnameCol, NameCol, BirthdayCol });
             dataGridView1.Location = new Point(3, 3);
             dataGridView1.Name = "dataGridView1";
-            dataGridView1.Size = new Size(546, 97);
+            dataGridView1.Size = new Size(546, 417);
             dataGridView1.TabIndex = 1;
             // 
             // SurnameCol

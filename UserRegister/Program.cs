@@ -42,7 +42,33 @@ namespace Uwr.OOP.BehavioralPatterns.EventAggregator
 
 namespace UserRegister
 {
-    using Notification = KeyValuePair<EventType, object?>;
+    public abstract class Notification { }
+
+    public abstract class NotificationWithPayload<T> : Notification
+    {
+        public T Data { get; set; }
+        public NotificationWithPayload(T data)
+        {
+            Data = data;
+        }
+    }
+
+    public class AddUserProfileNotification : Notification { }
+
+    public class EditUserProfileNotification : NotificationWithPayload<TreeNode>
+    {
+        public EditUserProfileNotification(TreeNode data) : base(data) { }
+    }
+
+    public class CategorySelectedNotification : NotificationWithPayload<TreeNode>
+    {
+        public CategorySelectedNotification(TreeNode data) : base( data) { }
+    }
+
+    public class UserProfileSelectedNotification : NotificationWithPayload<Person>
+    {
+        public UserProfileSelectedNotification(Person data) : base(data) { }
+    }
 
     public class Person
     {
@@ -65,14 +91,6 @@ namespace UserRegister
         }
     }
 
-    public enum EventType
-    {
-        CategorySelectedNotification,
-        UserProfileSelectedNotification,
-        AddUserProfileNotification,
-        EditUserProfileNotification
-    }
-
     internal static class Program
     {
         
@@ -87,9 +105,9 @@ namespace UserRegister
             ApplicationConfiguration.Initialize();
             EventAggregator eventAggregator = new EventAggregator();
             Kartoteka form1 = new Kartoteka(eventAggregator);
-            eventAggregator.AddSubscriber<Notification>(form1);
+            eventAggregator.AddSubscriber(form1);
             Application.Run(form1);
-            eventAggregator.RemoveSubscriber<Notification>(form1);
+            eventAggregator.RemoveSubscriber(form1);
         }
     }
 }

@@ -3,8 +3,6 @@ using EventAgg = Uwr.OOP.BehavioralPatterns.EventAggregator;
 
 namespace UserRegister
 {
-    using Notification = KeyValuePair<EventType, object?>;
-
     public partial class Kartoteka : Form, EventAgg.ISubscriber<Notification>
     {
         private EventAgg.IEventAggregator _eventAggregator;
@@ -114,53 +112,81 @@ namespace UserRegister
             treeView1.EndUpdate();
         }
 
+        //public new void Handle(Notification notification)
+        //{
+        //    if (notification.Key == EventType.AddUserProfileNotification)
+        //    {
+        //        addPerson();
+        //    }
+        //    else if (notification.Key == EventType.UserProfileSelectedNotification)
+        //    {
+        //        if (notification.Value == null)
+        //        {
+        //            return;
+        //        }
+        //        showPerson(notification.Value as Person);
+        //    }
+        //    else if (notification.Key == EventType.EditUserProfileNotification)
+        //    {
+        //        if (notification.Value == null)
+        //        {
+        //            return;
+        //        }
+        //        editPerson(notification.Value as TreeNode);
+        //    }
+        //    else if (notification.Key == EventType.CategorySelectedNotification)
+        //    {
+        //        if (notification.Value == null)
+        //        {
+        //            return;
+        //        }
+        //        showCategory(notification.Value as TreeNode);
+        //    }
+        //}
+
         public new void Handle(Notification notification)
         {
-            if (notification.Key == EventType.AddUserProfileNotification)
-            {
-                addPerson();
-            }
-            else if (notification.Key == EventType.UserProfileSelectedNotification)
-            {
-                if (notification.Value == null)
-                {
-                    return;
-                }
-                showPerson(notification.Value as Person);
-            }
-            else if (notification.Key == EventType.EditUserProfileNotification)
-            {
-                if (notification.Value == null)
-                {
-                    return;
-                }
-                editPerson(notification.Value as TreeNode);
-            }
-            else if (notification.Key == EventType.CategorySelectedNotification)
-            {
-                if (notification.Value == null)
-                {
-                    return;
-                }
-                showCategory(notification.Value as TreeNode);
-            }
+            throw new NotImplementedException();
+        }
+
+        public new void Handle(AddUserProfileNotification notification)
+        {
+            MessageBox.Show("add user handle");
+            addPerson();
+        }
+
+        public new void Handle(UserProfileSelectedNotification notification)
+        {
+            showPerson(notification.Data);
+        }
+
+        public new void Handle(EditUserProfileNotification notification)
+        {
+            editPerson(notification.Data);
+        }
+
+        public new void Handle(CategorySelectedNotification notification)
+        {
+            showCategory(notification.Data);
         }
 
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
             if (e.Node.Level == 0)
             {
-                _eventAggregator.Publish(new Notification(EventType.CategorySelectedNotification, e.Node));
+                _eventAggregator.Publish(new CategorySelectedNotification(e.Node));
             }
             else
             {
-                _eventAggregator.Publish(new Notification(EventType.UserProfileSelectedNotification, e.Node.Tag));
+                _eventAggregator.Publish(new UserProfileSelectedNotification(e.Node.Tag as Person));
             }
         }
 
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            _eventAggregator.Publish(new Notification(EventType.AddUserProfileNotification, null));
+            // IMPORTANT BIT
+            _eventAggregator.Publish<Notification>(new AddUserProfileNotification());
+            
         }
 
         private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
@@ -188,7 +214,7 @@ namespace UserRegister
                 MessageBox.Show("Please select a person to edit.");
                 return;
             }
-            _eventAggregator.Publish(new Notification(EventType.EditUserProfileNotification, treeView1.SelectedNode));
+            _eventAggregator.Publish(new EditUserProfileNotification(treeView1.SelectedNode));
         }
 
         private void label3_Click(object sender, EventArgs e)
