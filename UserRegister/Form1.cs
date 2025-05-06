@@ -3,7 +3,11 @@ using EventAgg = Uwr.OOP.BehavioralPatterns.EventAggregator;
 
 namespace UserRegister
 {
-    public partial class Kartoteka : Form, EventAgg.ISubscriber<Notification>
+    public partial class Kartoteka : Form,
+        EventAgg.ISubscriber<AddUserProfileNotification>,
+        EventAgg.ISubscriber<UserProfileSelectedNotification>,
+        EventAgg.ISubscriber<EditUserProfileNotification>,
+        EventAgg.ISubscriber<CategorySelectedNotification>
     {
         private EventAgg.IEventAggregator _eventAggregator;
 
@@ -112,43 +116,6 @@ namespace UserRegister
             treeView1.EndUpdate();
         }
 
-        //public new void Handle(Notification notification)
-        //{
-        //    if (notification.Key == EventType.AddUserProfileNotification)
-        //    {
-        //        addPerson();
-        //    }
-        //    else if (notification.Key == EventType.UserProfileSelectedNotification)
-        //    {
-        //        if (notification.Value == null)
-        //        {
-        //            return;
-        //        }
-        //        showPerson(notification.Value as Person);
-        //    }
-        //    else if (notification.Key == EventType.EditUserProfileNotification)
-        //    {
-        //        if (notification.Value == null)
-        //        {
-        //            return;
-        //        }
-        //        editPerson(notification.Value as TreeNode);
-        //    }
-        //    else if (notification.Key == EventType.CategorySelectedNotification)
-        //    {
-        //        if (notification.Value == null)
-        //        {
-        //            return;
-        //        }
-        //        showCategory(notification.Value as TreeNode);
-        //    }
-        //}
-
-        public new void Handle(Notification notification)
-        {
-            throw new NotImplementedException();
-        }
-
         public new void Handle(AddUserProfileNotification notification)
         {
             MessageBox.Show("add user handle");
@@ -184,9 +151,7 @@ namespace UserRegister
 
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            // IMPORTANT BIT
-            _eventAggregator.Publish<Notification>(new AddUserProfileNotification());
-            
+            _eventAggregator.Publish(new AddUserProfileNotification()); 
         }
 
         private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)

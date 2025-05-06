@@ -44,6 +44,38 @@ namespace UserRegister
 {
     public abstract class Notification { }
 
+    /*public class TheClass : ISubscriber<ConcreteNotification1>, ISubscriber<ConcreteNotification2>
+    {
+        public void Handle(ConcreteNotification2 Notification)
+        {
+            throw new NotImplementedException();
+        }
+    {
+        public void Handle(ConcreteNotification1 Notification)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    
+    public class TheClass2 : ISubscriber<NotificationWithPayload<Not2>>, ISubscriber<NotificationWithPayload<Not1>>
+    {
+        public void Handle(NotificationWithPayload<Not1> Notification)
+        {
+            throw new NotImplementedException();
+        }
+    {
+        public void Handle(NotificationWithPayload<Not2> Notification)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class ConcreteNotification1 { }
+    public class ConcreteNotification2 { }
+
+    public class Not1 { }
+    public class Not2 { }
+*/
     public abstract class NotificationWithPayload<T> : Notification
     {
         public T Data { get; set; }
@@ -103,11 +135,18 @@ namespace UserRegister
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
+
             EventAggregator eventAggregator = new EventAggregator();
             Kartoteka form1 = new Kartoteka(eventAggregator);
-            eventAggregator.AddSubscriber(form1);
+            eventAggregator.AddSubscriber<AddUserProfileNotification>(form1);
+            eventAggregator.AddSubscriber<UserProfileSelectedNotification>(form1);
+            eventAggregator.AddSubscriber<EditUserProfileNotification>(form1);
+            eventAggregator.AddSubscriber<CategorySelectedNotification>(form1);
             Application.Run(form1);
-            eventAggregator.RemoveSubscriber(form1);
+            eventAggregator.RemoveSubscriber<AddUserProfileNotification>(form1);
+            eventAggregator.RemoveSubscriber<UserProfileSelectedNotification>(form1);
+            eventAggregator.RemoveSubscriber<EditUserProfileNotification>(form1);
+            eventAggregator.RemoveSubscriber<CategorySelectedNotification>(form1);
         }
     }
 }
