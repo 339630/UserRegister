@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using Uwr.OOP.BehavioralPatterns.EventAggregator;
 using EventAgg = Uwr.OOP.BehavioralPatterns.EventAggregator;
 
 namespace UserRegister
@@ -11,11 +12,23 @@ namespace UserRegister
     {
         private EventAgg.IEventAggregator _eventAggregator;
 
-        public Kartoteka(EventAgg.IEventAggregator eventAggregator)
+        public Kartoteka()
         {
             InitializeComponent();
             InitializeTreeView();
-            _eventAggregator = eventAggregator;
+            _eventAggregator = new EventAggregator();
+            _eventAggregator.AddSubscriber<AddUserProfileNotification>(this);
+            _eventAggregator.AddSubscriber<UserProfileSelectedNotification>(this);
+            _eventAggregator.AddSubscriber<EditUserProfileNotification>(this);
+            _eventAggregator.AddSubscriber<CategorySelectedNotification>(this);
+        }
+
+        ~Kartoteka()
+        {
+            _eventAggregator.RemoveSubscriber<AddUserProfileNotification>(this);
+            _eventAggregator.RemoveSubscriber<UserProfileSelectedNotification>(this);
+            _eventAggregator.RemoveSubscriber<EditUserProfileNotification>(this);
+            _eventAggregator.RemoveSubscriber<CategorySelectedNotification>(this);
         }
 
         private void addPerson()
@@ -118,7 +131,6 @@ namespace UserRegister
 
         public new void Handle(AddUserProfileNotification notification)
         {
-            MessageBox.Show("add user handle");
             addPerson();
         }
 

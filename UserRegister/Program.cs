@@ -136,17 +136,8 @@ namespace UserRegister
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
 
-            EventAggregator eventAggregator = new EventAggregator();
-            Kartoteka form1 = new Kartoteka(eventAggregator);
-            eventAggregator.AddSubscriber<AddUserProfileNotification>(form1);
-            eventAggregator.AddSubscriber<UserProfileSelectedNotification>(form1);
-            eventAggregator.AddSubscriber<EditUserProfileNotification>(form1);
-            eventAggregator.AddSubscriber<CategorySelectedNotification>(form1);
+            Kartoteka form1 = new Kartoteka();
             Application.Run(form1);
-            eventAggregator.RemoveSubscriber<AddUserProfileNotification>(form1);
-            eventAggregator.RemoveSubscriber<UserProfileSelectedNotification>(form1);
-            eventAggregator.RemoveSubscriber<EditUserProfileNotification>(form1);
-            eventAggregator.RemoveSubscriber<CategorySelectedNotification>(form1);
         }
     }
 }
